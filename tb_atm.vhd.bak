@@ -1,0 +1,183 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tb_atm is
+end tb_atm;
+
+architecture tb of tb_atm is
+
+    component atm
+        port (clk              : in std_logic;
+              card             : in std_logic;
+              pin              : in std_logic;
+              withdraw         : in std_logic;
+              deposit          : in std_logic;
+              sav              : in std_logic;
+              cheq             : in std_logic;
+              amt20            : in std_logic;
+              amt40            : in std_logic;
+              amt60            : in std_logic;
+              amt80            : in std_logic;
+              amt100           : in std_logic;
+              n10              : in std_logic;
+              n20              : in std_logic;
+              n50              : in std_logic;
+              n100             : in std_logic;
+              number10         : in std_logic_vector (3 downto 0);
+              number20         : in std_logic_vector (3 downto 0);
+              number50         : in std_logic_vector (3 downto 0);
+              number100        : in std_logic_vector (3 downto 0);
+              total_notes      : out std_logic_vector (3 downto 0);
+              no_of_10         : out std_logic_vector (3 downto 0);
+              no_of_20         : out std_logic_vector (3 downto 0);
+              no_of_50         : out std_logic_vector (3 downto 0);
+              no_of_100        : out std_logic_vector (3 downto 0);
+              ack              : out std_logic;
+              deposit_complete : out std_logic;
+              dollar10         : out std_logic;
+              dollar20         : out std_logic;
+              dollar30         : out std_logic;
+              dollar40         : out std_logic;
+              dollar50         : out std_logic;
+              dollar60         : out std_logic;
+              dollar70         : out std_logic;
+              dollar80         : out std_logic;
+              dollar90         : out std_logic;
+              dollar100        : out std_logic);
+    end component;
+
+    signal clk              : std_logic;
+    signal card             : std_logic;
+    signal pin              : std_logic;
+    signal withdraw         : std_logic;
+    signal deposit          : std_logic;
+    signal sav              : std_logic;
+    signal cheq             : std_logic;
+    signal amt20            : std_logic;
+    signal amt40            : std_logic;
+    signal amt60            : std_logic;
+    signal amt80            : std_logic;
+    signal amt100           : std_logic;
+    signal n10              : std_logic;
+    signal n20              : std_logic;
+    signal n50              : std_logic;
+    signal n100             : std_logic;
+    signal number10         : std_logic_vector (3 downto 0);
+    signal number20         : std_logic_vector (3 downto 0);
+    signal number50         : std_logic_vector (3 downto 0);
+    signal number100        : std_logic_vector (3 downto 0);
+    signal total_notes      : std_logic_vector (3 downto 0);
+    signal no_of_10         : std_logic_vector (3 downto 0);
+    signal no_of_20         : std_logic_vector (3 downto 0);
+    signal no_of_50         : std_logic_vector (3 downto 0);
+    signal no_of_100        : std_logic_vector (3 downto 0);
+    signal ack              : std_logic;
+    signal deposit_complete : std_logic;
+    signal dollar10         : std_logic;
+    signal dollar20         : std_logic;
+    signal dollar30         : std_logic;
+    signal dollar40         : std_logic;
+    signal dollar50         : std_logic;
+    signal dollar60         : std_logic;
+    signal dollar70         : std_logic;
+    signal dollar80         : std_logic;
+    signal dollar90         : std_logic;
+    signal dollar100        : std_logic;
+
+    constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
+
+begin
+
+    dut : atm
+    port map (clk              => clk,
+              card             => card,
+              pin              => pin,
+              withdraw         => withdraw,
+              deposit          => deposit,
+              sav              => sav,
+              cheq             => cheq,
+              amt20            => amt20,
+              amt40            => amt40,
+              amt60            => amt60,
+              amt80            => amt80,
+              amt100           => amt100,
+              n10              => n10,
+              n20              => n20,
+              n50              => n50,
+              n100             => n100,
+              number10         => number10,
+              number20         => number20,
+              number50         => number50,
+              number100        => number100,
+              total_notes      => total_notes,
+              no_of_10         => no_of_10,
+              no_of_20         => no_of_20,
+              no_of_50         => no_of_50,
+              no_of_100        => no_of_100,
+              ack              => ack,
+              deposit_complete => deposit_complete,
+              dollar10         => dollar10,
+              dollar20         => dollar20,
+              dollar30         => dollar30,
+              dollar40         => dollar40,
+              dollar50         => dollar50,
+              dollar60         => dollar60,
+              dollar70         => dollar70,
+              dollar80         => dollar80,
+              dollar90         => dollar90,
+              dollar100        => dollar100);
+
+    -- Clock generation
+    TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
+
+    -- EDIT: Check that clk is really your main clock signal
+    clk <= TbClock;
+
+    stimuli : process
+    begin
+        -- EDIT Adapt initialization as needed
+        card <= '0';
+        pin <= '0';
+        withdraw <= '0';
+        deposit <= '0';
+        sav <= '0';
+        cheq <= '0';
+        amt20 <= '0';
+        amt40 <= '0';
+        amt60 <= '0';
+        amt80 <= '0';
+        amt100 <= '0';
+        n10 <= '0';
+        n20 <= '0';
+        n50 <= '0';
+        n100 <= '0';
+        number10 <= (others => '0');
+        number20 <= (others => '0');
+        number50 <= (others => '0');
+        number100 <= (others => '0');
+
+        -- Reset generation
+        --  EDIT: Replace YOURRESETSIGNAL below by the name of your reset as I haven't guessed it
+        YOURRESETSIGNAL <= '1';
+        wait for 100 ns;
+        YOURRESETSIGNAL <= '0';
+        wait for 100 ns;
+
+        -- EDIT Add stimuli here
+        wait for 100 * TbPeriod;
+
+        -- Stop the clock and hence terminate the simulation
+        TbSimEnded <= '1';
+        wait;
+    end process;
+
+end tb;
+
+-- Configuration block below is required by some simulators. Usually no need to edit.
+
+configuration cfg_tb_atm of tb_atm is
+    for tb
+    end for;
+end cfg_tb_atm;

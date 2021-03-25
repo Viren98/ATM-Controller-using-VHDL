@@ -1,0 +1,37 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+
+entity atm is
+
+    port (clk : in std_logic;
+        card, pin, withdraw, sav, cheq : in std_logic;
+		  : out std_logic);
+end entity atm;
+
+architecture arc of atm is
+
+component counter2bit is
+	port ( clk , card, pin : in std_logic ;
+	q: out std_logic_vector (1 downto 0) );
+end component ;
+
+signal t2 : std_logic ;
+signal q_out : std_logic_vector (1 downto 0);
+
+type state_type is (idle, ver_card, ver_pin, wit, wit_sa, wit_ca, wit_amt, wit_done, abort);
+
+signal ps,ns : state_type := idle ;
+
+
+begin 
+
+coun : counter2bit port map ( clk , card, pin , q_out );
+t10 <= q_out (1) and (not q_out (0));
+
+process ( clk )
+begin
+	if (clk'event and clk='1') then
+			ps <= ns ;
+	end if ;
+end process ;
